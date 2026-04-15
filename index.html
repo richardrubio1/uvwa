@@ -1349,15 +1349,17 @@
       .hero { min-height: auto; padding: 6rem 1.5rem 3rem; }
       .hero h1 { font-size: 2.6rem; letter-spacing: -1.5px; }
 
-      /* Hero mosaic — empilha verticalmente com aspect-ratio */
+      /* Hero mosaic — só 1 imagem grande no mobile */
       .hero-mosaic {
         height: auto;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         grid-template-rows: auto;
-        gap: 0.5rem;
+        gap: 0;
       }
-      .mosaic-img { aspect-ratio: 3/4; }
-      .mosaic-img:nth-child(1) { grid-row: auto; grid-column: 1 / -1; aspect-ratio: 16/9; }
+      .mosaic-img { aspect-ratio: 3/4; border-radius: 12px; }
+      .mosaic-img:nth-child(1) { grid-row: auto; }
+      .mosaic-img:nth-child(2),
+      .mosaic-img:nth-child(3) { display: none; }
 
       .hero-metrics { gap: 2rem; flex-wrap: wrap; }
       section { padding: 5rem 1.5rem; }
@@ -1391,14 +1393,8 @@
       .btn { width: 100%; justify-content: center; }
       .btn-white, .btn-ghost-white { width: 100%; justify-content: center; }
 
-      /* Hero mosaic — coluna única no mobile pequeno */
-      .hero-mosaic {
-        grid-template-columns: 1fr;
-        gap: 0.4rem;
-      }
-      .mosaic-img { aspect-ratio: 4/3; }
-      .mosaic-img:nth-child(1) { grid-column: auto; aspect-ratio: 16/10; }
-      .mosaic-img:nth-child(3) { display: none; }
+      /* Hero mosaic — mantém 1 imagem */
+      .mosaic-img { aspect-ratio: 3/4; }
 
       /* Gallery — mais compacto */
       .gallery-card { width: 240px; }
@@ -1479,9 +1475,9 @@
       </div>
       <div class="hero-visual">
         <div class="hero-mosaic">
-          <div class="mosaic-img"><img src="Imagens/conjunto-navy-1.jpeg" alt="Conjunto Navy UVWA" loading="eager"></div>
-          <div class="mosaic-img"><img src="Imagens/rash-feminina-bege-1.jpeg" alt="Rash UV50+ Bege" loading="eager"></div>
-          <div class="mosaic-img"><img src="Imagens/conjunto-verde-2.jpeg" alt="Conjunto Verde Sage" loading="eager"></div>
+          <div class="mosaic-img"><img src="Imagens/conjunto-pink-3.jpeg" alt="UVWA Clothing" loading="eager"></div>
+          <div class="mosaic-img"><img src="Imagens/conjunto-navy-detalhe-1.jpeg" alt="UVWA Clothing" loading="eager"></div>
+          <div class="mosaic-img"><img src="Imagens/conjunto-verde-4.jpeg" alt="UVWA Clothing" loading="eager"></div>
         </div>
         <div class="hero-float">
           <div class="fl-dot"></div>
@@ -1569,35 +1565,28 @@
     <div class="gallery-track-wrapper" id="galleryWrapper">
       <div class="gallery-track">
         <div class="gallery-card">
-          <img src="Imagens/conjunto-navy-2.jpeg" alt="Conjunto Navy" loading="lazy">
+          <img src="Imagens/conjunto-navy-2.jpeg" alt="UVWA Clothing" loading="lazy">
           <span class="gallery-tag">Novo</span>
-          <div class="gallery-card-info"><h3>Conjunto Navy</h3><p>Cropped + Legging Canelada</p></div>
         </div>
         <div class="gallery-card">
-          <img src="Imagens/conjunto-verde-1.jpeg" alt="Conjunto Verde Sage" loading="lazy">
-          <div class="gallery-card-info"><h3>Conjunto Verde Sage</h3><p>Cropped + Legging Canelada</p></div>
+          <img src="Imagens/conjunto-verde-1.jpeg" alt="UVWA Clothing" loading="lazy">
         </div>
         <div class="gallery-card">
-          <img src="Imagens/conjunto-pink-1.jpeg" alt="Conjunto Pink" loading="lazy">
+          <img src="Imagens/conjunto-pink-1.jpeg" alt="UVWA Clothing" loading="lazy">
           <span class="gallery-tag">Best-seller</span>
-          <div class="gallery-card-info"><h3>Conjunto Pink</h3><p>Top + Shorts Fitness</p></div>
         </div>
         <div class="gallery-card">
-          <img src="Imagens/conjunto-marrom-1.jpeg" alt="Conjunto Marrom" loading="lazy">
-          <div class="gallery-card-info"><h3>Conjunto Marrom</h3><p>Top + Legging Canelada</p></div>
+          <img src="Imagens/conjunto-marrom-1.jpeg" alt="UVWA Clothing" loading="lazy">
         </div>
         <div class="gallery-card">
-          <img src="Imagens/rash-feminina-bege-3.jpeg" alt="Rash UV50+ Bege" loading="lazy">
+          <img src="Imagens/rash-feminina-bege-3.jpeg" alt="UVWA Clothing" loading="lazy">
           <span class="gallery-tag">UV50+</span>
-          <div class="gallery-card-info"><h3>Rash UV50+ Bege</h3><p>Manga Longa Proteção Solar</p></div>
         </div>
         <div class="gallery-card">
-          <img src="Imagens/conjunto-preto-1.jpeg" alt="Conjunto Preto" loading="lazy">
-          <div class="gallery-card-info"><h3>Conjunto Preto</h3><p>Top + Legging Canelada</p></div>
+          <img src="Imagens/conjunto-preto-1.jpeg" alt="UVWA Clothing" loading="lazy">
         </div>
         <div class="gallery-card">
-          <img src="Imagens/conjunto-marrom-5.jpeg" alt="Conjunto Marrom" loading="lazy">
-          <div class="gallery-card-info"><h3>Conjunto Marrom</h3><p>Vista lateral</p></div>
+          <img src="Imagens/conjunto-marrom-5.jpeg" alt="UVWA Clothing" loading="lazy">
         </div>
       </div>
     </div>
