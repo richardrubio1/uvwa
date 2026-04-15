@@ -8,55 +8,115 @@
   <meta property="og:title" content="UVWA Clothing — Programa de Revenda">
   <meta property="og:description" content="Revenda roupas com tecnologia UV50+. Margens de até 100%, suporte completo e estoque pronta-entrega.">
   <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="Imagens/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --white: #ffffff;
-      --bg: #fafaf8;
-      --bg-warm: #f5f0eb;
-      --bg-section: #f6f3ef;
+      --off-white: #faf9f7;
+      --cream: #f5f1ec;
+      --warm-gray: #ede8e2;
       --orange: #F27B20;
-      --orange-light: #f59542;
+      --orange-light: #f8943f;
       --orange-dark: #d96a15;
-      --orange-glow: rgba(242, 123, 32, 0.08);
-      --orange-glow-md: rgba(242, 123, 32, 0.15);
-      --orange-glow-strong: rgba(242, 123, 32, 0.25);
-      --text-dark: #1a1a1a;
-      --text-body: #555555;
-      --text-muted: #999999;
-      --border: #e8e2dc;
-      --border-light: #f0ebe5;
+      --orange-glow: rgba(242,123,32,0.07);
+      --orange-glow-md: rgba(242,123,32,0.14);
+      --orange-glow-strong: rgba(242,123,32,0.22);
+      --dark: #141210;
+      --dark-soft: #1e1c19;
+      --text: #2a2825;
+      --text-body: #5c5852;
+      --text-muted: #9e978e;
+      --border: #e3ded7;
+      --border-light: #eee9e3;
     }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--white);
-      color: var(--text-dark);
+      color: var(--text);
       line-height: 1.6;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ===== CUSTOM CURSOR GLOW ===== */
+    /* ===== GRAIN OVERLAY ===== */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* ===== LOADER ===== */
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: var(--white);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease, visibility 0.6s;
+    }
+
+    .loader.done {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-bar {
+      width: 120px;
+      height: 2px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .loader-bar::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--orange);
+      animation: loaderFill 1.2s ease forwards;
+    }
+
+    @keyframes loaderFill {
+      to { width: 100%; }
+    }
+
+    /* ===== SMOOTH CURSOR GLOW ===== */
     .cursor-glow {
       position: fixed;
-      width: 300px; height: 300px;
+      width: 400px; height: 400px;
       border-radius: 50%;
-      background: radial-gradient(circle, var(--orange-glow-md) 0%, transparent 70%);
+      background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
       pointer-events: none;
       z-index: 0;
       transform: translate(-50%, -50%);
-      transition: opacity 0.3s;
       opacity: 0;
+      transition: opacity 0.4s;
+      will-change: transform;
     }
 
-    body:hover .cursor-glow { opacity: 1; }
+    @media (hover: hover) {
+      body:hover .cursor-glow { opacity: 1; }
+    }
 
     /* ===== NAVBAR ===== */
     .navbar {
@@ -64,21 +124,21 @@
       top: 0; left: 0; right: 0;
       z-index: 1000;
       padding: 1.2rem 2rem;
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid transparent;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      background: rgba(255,255,255,0);
+      backdrop-filter: blur(0px);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .navbar.scrolled {
       padding: 0.7rem 2rem;
-      border-bottom-color: var(--border-light);
-      box-shadow: 0 1px 30px rgba(0,0,0,0.04);
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border-light);
     }
 
     .navbar-inner {
-      max-width: 1200px;
+      max-width: 1300px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -86,8 +146,7 @@
     }
 
     .logo { display: inline-flex; align-items: center; text-decoration: none; }
-    .logo img { height: 26px; width: auto; transition: opacity 0.3s; }
-    .logo:hover img { opacity: 0.7; }
+    .logo img { height: 24px; width: auto; transition: all 0.3s; }
 
     .nav-links {
       display: flex;
@@ -99,9 +158,9 @@
     .nav-links a {
       color: var(--text-body);
       text-decoration: none;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 500;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       transition: color 0.3s;
       position: relative;
@@ -111,30 +170,29 @@
       content: '';
       position: absolute;
       bottom: -4px; left: 0;
-      width: 0; height: 1.5px;
+      width: 0; height: 1px;
       background: var(--orange);
-      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .nav-links a:hover { color: var(--orange); }
+    .nav-links a:hover { color: var(--text); }
     .nav-links a:hover::after { width: 100%; }
 
     .nav-cta {
-      background: var(--orange) !important;
+      background: var(--text) !important;
       color: var(--white) !important;
-      padding: 0.55rem 1.4rem;
+      padding: 0.6rem 1.6rem !important;
       border-radius: 50px;
       font-weight: 600 !important;
-      letter-spacing: 0.5px !important;
-      transition: all 0.3s !important;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
 
     .nav-cta::after { display: none !important; }
 
     .nav-cta:hover {
-      background: var(--orange-dark) !important;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px var(--orange-glow-strong);
+      background: var(--orange) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--orange-glow-strong);
     }
 
     .menu-toggle {
@@ -143,432 +201,434 @@
       border: none;
       cursor: pointer;
       padding: 0.5rem;
+      position: relative;
+      width: 32px; height: 32px;
     }
 
     .menu-toggle span {
-      display: block;
-      width: 22px; height: 2px;
-      background: var(--text-dark);
-      margin: 5px 0;
+      position: absolute;
+      left: 4px;
+      width: 24px; height: 1.5px;
+      background: var(--text);
       transition: all 0.3s;
       border-radius: 2px;
     }
 
+    .menu-toggle span:nth-child(1) { top: 10px; }
+    .menu-toggle span:nth-child(2) { top: 16px; width: 16px; }
+    .menu-toggle span:nth-child(3) { top: 22px; }
+
     /* ===== HERO ===== */
     .hero {
       min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 8rem 2rem 5rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      gap: 4rem;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 2rem 3rem;
       position: relative;
+      overflow: hidden;
+    }
+
+    .hero-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 4rem;
+      align-items: center;
     }
 
     .hero-text { z-index: 2; }
 
-    .hero-badge {
+    .hero-eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 0.6rem;
-      padding: 0.45rem 1.2rem;
-      border: 1px solid var(--orange);
-      border-radius: 50px;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--orange);
-      background: var(--orange-glow);
+      gap: 0.8rem;
       margin-bottom: 2rem;
       opacity: 0;
-      animation: fadeInDown 0.6s ease 0.2s forwards;
+      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.3s forwards;
     }
 
-    .hero-badge::before {
-      content: '';
-      width: 6px; height: 6px;
+    .hero-eyebrow .line {
+      width: 32px; height: 1px;
       background: var(--orange);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
+    }
+
+    .hero-eyebrow span {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
     }
 
     .hero h1 {
-      font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+      font-size: clamp(3rem, 6vw, 5.5rem);
       font-weight: 800;
-      line-height: 1.05;
-      margin-bottom: 1.5rem;
-      color: var(--text-dark);
-      letter-spacing: -1.5px;
+      line-height: 1.0;
+      margin-bottom: 2rem;
+      color: var(--text);
+      letter-spacing: -2.5px;
     }
 
     .hero h1 .word {
       display: inline-block;
-      opacity: 0;
-      transform: translateY(40px);
-      animation: wordReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      overflow: hidden;
+    }
+
+    .hero h1 .word-inner {
+      display: inline-block;
+      transform: translateY(110%);
+      animation: wordUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     .hero h1 .italic {
       font-family: 'Playfair Display', serif;
       font-style: italic;
+      font-weight: 500;
       color: var(--orange);
     }
 
-    .hero h1 .line { display: block; }
+    .hero h1 .thin {
+      font-weight: 300;
+      color: var(--text-muted);
+    }
+
+    .hero h1 br { display: block; }
 
     .hero-sub {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--text-body);
-      max-width: 460px;
-      line-height: 1.8;
+      max-width: 420px;
+      line-height: 1.85;
       margin-bottom: 2.5rem;
       opacity: 0;
-      animation: fadeInUp 0.7s ease 0.8s forwards;
+      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
     }
 
     .hero-actions {
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
-      margin-bottom: 3.5rem;
+      margin-bottom: 4rem;
       opacity: 0;
-      animation: fadeInUp 0.7s ease 1s forwards;
+      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.7s forwards;
     }
 
-    /* ===== BUTTONS ===== */
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.95rem 2.2rem;
-      background: var(--orange);
-      color: var(--white);
-      border: none;
-      border-radius: 50px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      letter-spacing: 0.3px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 0; height: 0;
-      background: rgba(255,255,255,0.15);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .btn-primary:hover::before { width: 300px; height: 300px; }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px var(--orange-glow-strong);
-    }
-
-    .btn-outline {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.95rem 2.2rem;
-      background: transparent;
-      color: var(--text-dark);
-      border: 1.5px solid var(--border);
-      border-radius: 50px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--orange);
-      color: var(--orange);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px var(--orange-glow);
-    }
-
-    /* ===== HERO STATS ===== */
-    .hero-stats {
+    .hero-metrics {
       display: flex;
-      gap: 2.5rem;
+      gap: 3.5rem;
       opacity: 0;
-      animation: fadeInUp 0.7s ease 1.2s forwards;
+      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.9s forwards;
     }
 
-    .hero-stat {
+    .metric {
       position: relative;
       padding-left: 1rem;
     }
 
-    .hero-stat::before {
+    .metric::before {
       content: '';
       position: absolute;
-      left: 0; top: 4px; bottom: 4px;
+      left: 0; top: 2px; bottom: 2px;
       width: 2px;
-      background: var(--orange);
+      background: linear-gradient(to bottom, var(--orange), transparent);
       border-radius: 2px;
     }
 
-    .hero-stat h3 {
-      font-size: 1.6rem;
+    .metric-value {
+      font-size: 1.5rem;
       font-weight: 800;
-      color: var(--text-dark);
       letter-spacing: -0.5px;
+      color: var(--text);
+      line-height: 1;
     }
 
-    .hero-stat p {
-      font-size: 0.68rem;
+    .metric-label {
+      font-size: 0.62rem;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      font-weight: 500;
+      font-weight: 600;
+      margin-top: 0.3rem;
     }
 
     /* ===== HERO IMAGES ===== */
-    .hero-images {
+    .hero-visual {
       position: relative;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
       z-index: 2;
     }
 
-    .hero-img {
-      border-radius: 20px;
+    .hero-mosaic {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 0.8rem;
+      height: 580px;
+    }
+
+    .mosaic-img {
+      border-radius: 16px;
       overflow: hidden;
-      aspect-ratio: 3/4;
+      position: relative;
       opacity: 0;
-      animation: scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    .hero-img:first-child {
-      margin-top: 3rem;
-      animation-delay: 0.4s;
-    }
-
-    .hero-img:last-child { animation-delay: 0.6s; }
-
-    .hero-img img {
+    .mosaic-img img {
       width: 100%; height: 100%;
       object-fit: cover;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .hero-img:hover img { transform: scale(1.05); }
+    .mosaic-img:hover img { transform: scale(1.05); }
 
-    .hero-float-badge {
+    .mosaic-img:nth-child(1) {
+      grid-row: 1 / 3;
+      animation: mosaicIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+    }
+
+    .mosaic-img:nth-child(2) {
+      animation: mosaicIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+    }
+
+    .mosaic-img:nth-child(3) {
+      animation: mosaicIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+    }
+
+    .hero-float {
       position: absolute;
-      bottom: 2rem; left: -1rem;
+      bottom: -1rem; left: -2rem;
       background: var(--white);
-      border: 1px solid var(--border-light);
       border-radius: 14px;
-      padding: 1rem 1.4rem;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      padding: 1rem 1.3rem;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
       display: flex;
       align-items: center;
       gap: 0.8rem;
       z-index: 10;
       opacity: 0;
-      animation: floatIn 0.8s ease 1.4s forwards;
+      animation: floatBadge 0.8s ease 2.2s forwards;
     }
 
-    .hero-float-badge .float-icon {
-      width: 40px; height: 40px;
-      background: var(--orange-glow-md);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
+    .hero-float .fl-dot {
+      width: 10px; height: 10px;
+      background: var(--orange);
+      border-radius: 50%;
+      animation: pulseDot 2s infinite;
     }
 
-    .hero-float-badge .float-text h4 {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text-dark);
+    .hero-float p {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text);
     }
 
-    .hero-float-badge .float-text p {
-      font-size: 0.7rem;
+    .hero-float p span {
       color: var(--text-muted);
+      font-weight: 400;
     }
 
-    /* ===== SCROLL INDICATOR ===== */
-    .scroll-indicator {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      opacity: 0;
-      animation: fadeInUp 0.6s ease 1.6s forwards;
-    }
-
-    .scroll-indicator span {
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .scroll-line {
-      width: 1px; height: 40px;
-      background: var(--border);
+      gap: 0.6rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
       overflow: hidden;
+      letter-spacing: 0.3px;
     }
 
-    .scroll-line::after {
+    .btn-primary {
+      padding: 0.95rem 2.2rem;
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+    }
+
+    .btn-primary::before {
       content: '';
       position: absolute;
-      top: -100%; left: 0;
-      width: 100%; height: 50%;
-      background: var(--orange);
-      animation: scrollDown 2s ease infinite;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
     }
 
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 16px 40px var(--orange-glow-strong);
+    }
+
+    .btn-primary:hover::before { opacity: 1; }
+
+    .btn-outline {
+      padding: 0.95rem 2.2rem;
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--text);
+      transform: translateY(-3px);
+    }
+
+    .btn-arrow {
+      width: 12px; height: 12px;
+      transition: transform 0.3s;
+    }
+
+    .btn:hover .btn-arrow { transform: translateX(3px); }
+
     /* ===== MARQUEE ===== */
-    .marquee-section {
-      padding: 1.5rem 0;
+    .marquee {
+      padding: 1.3rem 0;
       overflow: hidden;
       border-top: 1px solid var(--border-light);
       border-bottom: 1px solid var(--border-light);
-      background: var(--bg);
+      background: var(--off-white);
     }
 
     .marquee-track {
       display: flex;
       width: max-content;
-      animation: marquee 25s linear infinite;
+      animation: marqueeScroll 30s linear infinite;
     }
+
+    .marquee:hover .marquee-track { animation-play-state: paused; }
 
     .marquee-item {
       display: flex;
       align-items: center;
-      gap: 2rem;
-      padding: 0 2rem;
+      gap: 1.5rem;
+      padding: 0 1.5rem;
       white-space: nowrap;
-      font-size: 0.75rem;
+    }
+
+    .marquee-item span {
+      font-size: 0.7rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 3px;
       color: var(--text-muted);
     }
 
-    .marquee-item .dot {
-      width: 4px; height: 4px;
+    .marquee-item .sep {
+      width: 5px; height: 5px;
       background: var(--orange);
       border-radius: 50%;
+      flex-shrink: 0;
     }
 
     /* ===== SECTIONS ===== */
-    section { padding: 7rem 2rem; position: relative; }
+    section { padding: 8rem 2rem; position: relative; }
 
     .section-inner { max-width: 1200px; margin: 0 auto; }
 
     .section-label {
       display: inline-flex;
       align-items: center;
-      gap: 0.6rem;
-      font-size: 0.65rem;
+      gap: 0.7rem;
+      font-size: 0.62rem;
       font-weight: 700;
-      letter-spacing: 3px;
+      letter-spacing: 3.5px;
       text-transform: uppercase;
       color: var(--orange);
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
     }
 
     .section-label::before {
       content: '';
-      width: 20px; height: 1.5px;
+      width: 24px; height: 1px;
       background: var(--orange);
     }
 
     .section-title {
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
       font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 1rem;
-      color: var(--text-dark);
-      letter-spacing: -1px;
+      line-height: 1.08;
+      margin-bottom: 1.2rem;
+      color: var(--text);
+      letter-spacing: -1.5px;
+    }
+
+    .section-title .accent {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--orange);
     }
 
     .section-desc {
       font-size: 1rem;
       color: var(--text-body);
-      max-width: 520px;
-      line-height: 1.8;
+      max-width: 480px;
+      line-height: 1.85;
     }
 
     /* ===== BENEFITS ===== */
-    .benefits { background: var(--bg-section); }
+    .benefits { background: var(--off-white); }
+
+    .benefits-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+      margin-bottom: 4rem;
+    }
 
     .benefits-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.2rem;
-      margin-top: 3.5rem;
+      gap: 1px;
+      background: var(--border-light);
+      border-radius: 20px;
+      overflow: hidden;
     }
 
     .benefit-card {
       background: var(--white);
-      border: 1px solid var(--border-light);
-      border-radius: 20px;
-      padding: 2.2rem;
+      padding: 2.5rem;
       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
-      overflow: hidden;
     }
 
     .benefit-card::after {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--orange), var(--orange-light));
+      bottom: 0; left: 2.5rem; right: 2.5rem;
+      height: 2px;
+      background: var(--orange);
       transform: scaleX(0);
-      transform-origin: left;
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .benefit-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.06);
-      border-color: transparent;
-    }
-
+    .benefit-card:hover { background: var(--off-white); }
     .benefit-card:hover::after { transform: scaleX(1); }
 
-    .benefit-number {
-      font-size: 0.6rem;
-      font-weight: 700;
-      color: var(--orange);
-      letter-spacing: 2px;
+    .benefit-num {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--border);
+      line-height: 1;
       margin-bottom: 1.5rem;
-      opacity: 0.5;
+      transition: color 0.4s;
     }
 
+    .benefit-card:hover .benefit-num { color: var(--orange-glow-strong); }
+
     .benefit-card h3 {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       margin-bottom: 0.6rem;
-      color: var(--text-dark);
     }
 
     .benefit-card p {
@@ -577,64 +637,82 @@
       line-height: 1.7;
     }
 
-    /* ===== COLLECTIONS ===== */
-    .collections { background: var(--white); overflow: hidden; }
+    /* ===== HORIZONTAL SCROLL GALLERY ===== */
+    .gallery { background: var(--white); overflow: hidden; }
 
-    .collections-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 1rem;
-      margin-top: 3.5rem;
+    .gallery-header {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
     }
 
-    .collection-item {
-      position: relative;
+    .gallery-track-wrapper {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      cursor: grab;
+    }
+
+    .gallery-track-wrapper::-webkit-scrollbar { display: none; }
+    .gallery-track-wrapper.grabbing { cursor: grabbing; }
+
+    .gallery-track {
+      display: flex;
+      gap: 1.2rem;
+      padding: 0 max(2rem, calc((100vw - 1200px) / 2));
+      width: max-content;
+    }
+
+    .gallery-card {
+      flex-shrink: 0;
+      width: 320px;
       border-radius: 20px;
       overflow: hidden;
-      aspect-ratio: 3/4;
-      cursor: pointer;
+      position: relative;
+      background: var(--cream);
     }
 
-    .collection-item img {
-      width: 100%; height: 100%;
+    .gallery-card img {
+      width: 100%; height: 440px;
       object-fit: cover;
       transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .collection-item:hover img { transform: scale(1.08); }
+    .gallery-card:hover img { transform: scale(1.06); }
 
-    .collection-overlay {
+    .gallery-card-info {
       position: absolute;
-      inset: 0;
-      background: linear-gradient(transparent 50%, rgba(0,0,0,0.7));
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.5rem;
-      opacity: 0;
-      transition: opacity 0.4s;
+      bottom: 0; left: 0; right: 0;
+      padding: 3rem 1.5rem 1.5rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.75));
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .collection-item:hover .collection-overlay { opacity: 1; }
+    .gallery-card:hover .gallery-card-info { transform: translateY(0); }
 
-    .collection-overlay h3 {
+    .gallery-card-info h3 {
       color: white;
-      font-size: 0.9rem;
+      font-size: 1rem;
       font-weight: 700;
     }
 
-    .collection-overlay p {
+    .gallery-card-info p {
       color: rgba(255,255,255,0.7);
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       margin-top: 0.2rem;
     }
 
-    .collection-tag {
+    .gallery-tag {
       position: absolute;
-      top: 12px; left: 12px;
-      padding: 0.3rem 0.8rem;
-      background: var(--orange);
-      color: white;
+      top: 16px; left: 16px;
+      padding: 0.35rem 0.9rem;
+      background: var(--white);
+      color: var(--text);
       font-size: 0.6rem;
       font-weight: 700;
       border-radius: 50px;
@@ -642,69 +720,62 @@
       text-transform: uppercase;
     }
 
-    /* ===== STEPS ===== */
-    .how-it-works { background: var(--bg-section); }
+    .gallery-hint {
+      max-width: 1200px;
+      margin: 1.5rem auto 0;
+      text-align: right;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
 
-    .steps-container {
+    /* ===== STEPS ===== */
+    .steps-section { background: var(--off-white); }
+
+    .steps-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 0;
-      margin-top: 3.5rem;
+      margin-top: 4rem;
+    }
+
+    .step-item {
+      padding: 0 2rem;
+      text-align: center;
       position: relative;
     }
 
-    .steps-container::before {
+    .step-item:not(:last-child)::after {
       content: '';
       position: absolute;
-      top: 32px; left: 8%;
-      width: 84%; height: 2px;
+      top: 28px;
+      right: 0;
+      width: 1px; height: 24px;
       background: var(--border);
     }
 
-    .step {
-      text-align: center;
-      padding: 0 1.5rem;
-      position: relative;
-    }
-
-    .step-circle {
-      width: 64px; height: 64px;
-      background: var(--white);
-      border: 2px solid var(--border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.5rem;
-      position: relative;
-      z-index: 2;
-      transition: all 0.4s;
-    }
-
-    .step-circle span {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--text-muted);
-      transition: color 0.4s;
-    }
-
-    .step:hover .step-circle {
-      border-color: var(--orange);
-      box-shadow: 0 0 0 6px var(--orange-glow-md);
-    }
-
-    .step:hover .step-circle span { color: var(--orange); }
-
-    .step h3 {
-      font-size: 1rem;
+    .step-num {
+      font-size: 0.6rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
+      color: var(--orange);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
     }
 
-    .step p {
+    .step-item h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.3px;
+    }
+
+    .step-item p {
       font-size: 0.85rem;
       color: var(--text-body);
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     /* ===== TECH ===== */
@@ -714,136 +785,151 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1.2rem;
-      margin-top: 3.5rem;
+      margin-top: 4rem;
     }
 
-    .tech-item {
-      text-align: center;
-      padding: 2.5rem 1.5rem;
+    .tech-card {
+      padding: 2.5rem 2rem;
       border: 1px solid var(--border-light);
       border-radius: 20px;
+      text-align: center;
       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
       overflow: hidden;
     }
 
-    .tech-item::before {
+    .tech-card::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 0%, var(--orange-glow) 0%, transparent 70%);
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at center, var(--orange-glow) 0%, transparent 50%);
       opacity: 0;
-      transition: opacity 0.4s;
+      transition: opacity 0.5s;
     }
 
-    .tech-item:hover {
+    .tech-card:hover {
       border-color: var(--orange);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.05);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.04);
     }
 
-    .tech-item:hover::before { opacity: 1; }
+    .tech-card:hover::before { opacity: 1; }
 
-    .tech-icon {
-      width: 60px; height: 60px;
-      background: var(--orange-glow);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      margin: 0 auto 1.2rem;
-      position: relative;
-      z-index: 1;
+    .tech-emoji {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+      display: block;
+      position: relative; z-index: 1;
     }
 
-    .tech-item h3 {
+    .tech-card h3 {
       font-size: 1rem;
       font-weight: 700;
       margin-bottom: 0.4rem;
       position: relative; z-index: 1;
     }
 
-    .tech-item p {
+    .tech-card p {
       font-size: 0.82rem;
       color: var(--text-body);
       line-height: 1.6;
       position: relative; z-index: 1;
     }
 
-    /* ===== SHOWCASE ===== */
-    .showcase { background: var(--bg-section); overflow: hidden; }
+    /* ===== SHOWCASE (BENTO) ===== */
+    .showcase { background: var(--off-white); overflow: hidden; }
 
-    .showcase-grid {
+    .showcase-bento {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 4rem;
-      margin-top: 3.5rem;
+      margin-top: 4rem;
       align-items: center;
     }
 
-    .showcase-images {
+    .bento-images {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.8rem;
     }
 
-    .showcase-img {
+    .bento-img {
       border-radius: 16px;
       overflow: hidden;
-      aspect-ratio: 3/4;
     }
 
-    .showcase-img:nth-child(2) { margin-top: 2rem; }
-    .showcase-img:nth-child(3) { margin-top: -2rem; }
+    .bento-img:nth-child(1) { grid-row: 1 / 3; }
+    .bento-img:nth-child(2) { aspect-ratio: 1; }
+    .bento-img:nth-child(3) { aspect-ratio: 1; }
 
-    .showcase-img img {
+    .bento-img img {
       width: 100%; height: 100%;
       object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .showcase-img:hover img { transform: scale(1.04); }
+    .bento-img:hover img { transform: scale(1.04); }
 
     .showcase-text h3 {
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
       font-weight: 800;
-      margin-bottom: 1rem;
-      letter-spacing: -0.5px;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.8px;
+      line-height: 1.1;
     }
 
     .showcase-text p {
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--text-body);
-      line-height: 1.8;
+      line-height: 1.85;
       margin-bottom: 2rem;
     }
 
-    .showcase-features {
+    .feature-list {
       list-style: none;
       margin-bottom: 2.5rem;
     }
 
-    .showcase-features li {
+    .feature-list li {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
+      gap: 1rem;
       font-size: 0.9rem;
       color: var(--text-body);
-      padding: 0.6rem 0;
+      padding: 0.8rem 0;
       border-bottom: 1px solid var(--border-light);
+      transition: padding-left 0.3s;
     }
 
-    .showcase-features li::before {
-      content: '✦';
+    .feature-list li:hover { padding-left: 0.5rem; }
+
+    .feature-list li::before {
+      content: '→';
       color: var(--orange);
-      font-size: 0.7rem;
+      font-weight: 700;
+      font-size: 0.8rem;
     }
 
-    /* ===== NUMBERS STRIP ===== */
+    /* ===== NUMBERS ===== */
     .numbers {
-      background: var(--text-dark);
-      padding: 4rem 2rem;
+      background: var(--dark);
+      padding: 5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .numbers::before {
+      content: 'UVWA';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 18vw;
+      font-weight: 900;
+      color: rgba(255,255,255,0.02);
+      letter-spacing: 20px;
+      white-space: nowrap;
+      pointer-events: none;
     }
 
     .numbers-grid {
@@ -853,21 +939,23 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 2rem;
       text-align: center;
+      position: relative; z-index: 1;
     }
 
-    .number-item h3 {
-      font-size: 2.5rem;
+    .num-value {
+      font-size: 3rem;
       font-weight: 800;
       color: var(--orange);
-      letter-spacing: -1px;
+      letter-spacing: -2px;
+      line-height: 1;
     }
 
-    .number-item p {
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.5);
+    .num-label {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.4);
       text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-top: 0.3rem;
+      letter-spacing: 2.5px;
+      margin-top: 0.5rem;
       font-weight: 500;
     }
 
@@ -877,63 +965,65 @@
     .testimonials-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 3.5rem;
+      gap: 1.2rem;
+      margin-top: 4rem;
     }
 
-    .testimonial-card {
-      background: var(--bg-section);
+    .testi-card {
+      background: var(--off-white);
       border-radius: 20px;
-      padding: 2.2rem;
-      transition: all 0.4s;
+      padding: 2.5rem;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid transparent;
     }
 
-    .testimonial-card:hover {
+    .testi-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+      border-color: var(--border-light);
     }
 
-    .testimonial-stars {
+    .testi-stars {
       color: var(--orange);
-      font-size: 0.85rem;
-      margin-bottom: 1rem;
+      font-size: 0.8rem;
       letter-spacing: 3px;
+      margin-bottom: 1.2rem;
     }
 
-    .testimonial-card blockquote {
+    .testi-card blockquote {
       font-size: 0.92rem;
       color: var(--text-body);
-      line-height: 1.8;
+      line-height: 1.85;
       font-style: italic;
       margin-bottom: 1.5rem;
     }
 
-    .testimonial-author {
+    .testi-author {
       display: flex;
       align-items: center;
       gap: 0.8rem;
     }
 
-    .testimonial-avatar {
-      width: 40px; height: 40px;
+    .testi-avatar {
+      width: 38px; height: 38px;
       border-radius: 50%;
       background: var(--orange);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--white);
     }
 
-    .testimonial-name { font-weight: 700; font-size: 0.88rem; }
-    .testimonial-role { font-size: 0.72rem; color: var(--text-muted); }
+    .testi-name { font-weight: 700; font-size: 0.85rem; }
+    .testi-role { font-size: 0.7rem; color: var(--text-muted); }
 
     /* ===== CTA ===== */
     .cta-section {
       background: var(--orange);
       text-align: center;
-      padding: 7rem 2rem;
+      padding: 8rem 2rem;
       position: relative;
       overflow: hidden;
     }
@@ -943,7 +1033,7 @@
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 22vw;
+      font-size: 24vw;
       font-weight: 900;
       color: rgba(255,255,255,0.06);
       letter-spacing: 30px;
@@ -957,14 +1047,12 @@
 
     .cta-section .section-title {
       color: var(--white);
-      font-size: clamp(2.2rem, 5vw, 3.5rem);
-      margin-bottom: 1rem;
+      font-size: clamp(2.5rem, 5.5vw, 4rem);
     }
 
     .cta-section .section-desc {
       color: rgba(255,255,255,0.85);
       margin: 0 auto 3rem;
-      max-width: 480px;
     }
 
     .btn-white {
@@ -976,53 +1064,51 @@
       color: var(--orange);
       border: none;
       border-radius: 50px;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 700;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .btn-white:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.15);
     }
 
-    .btn-ghost {
+    .btn-ghost-white {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       padding: 1rem 2.5rem;
       background: transparent;
       color: var(--white);
-      border: 2px solid rgba(255,255,255,0.3);
+      border: 1.5px solid rgba(255,255,255,0.3);
       border-radius: 50px;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.3s;
+      transition: all 0.4s;
     }
 
-    .btn-ghost:hover {
-      border-color: var(--white);
+    .btn-ghost-white:hover {
+      border-color: white;
       background: rgba(255,255,255,0.1);
     }
 
     /* ===== FAQ ===== */
-    .faq { background: var(--bg-section); }
+    .faq { background: var(--off-white); }
 
-    .faq-list { max-width: 700px; margin: 3.5rem auto 0; }
+    .faq-list { max-width: 680px; margin: 4rem auto 0; }
     .faq-item { border-bottom: 1px solid var(--border); }
 
-    .faq-question {
+    .faq-q {
       width: 100%;
       background: none;
       border: none;
-      color: var(--text-dark);
-      font-size: 1rem;
+      color: var(--text);
+      font-size: 0.95rem;
       font-weight: 600;
       text-align: left;
       padding: 1.5rem 0;
@@ -1031,39 +1117,50 @@
       justify-content: space-between;
       align-items: center;
       gap: 1rem;
-      transition: color 0.3s;
       font-family: inherit;
+      transition: color 0.3s;
     }
 
-    .faq-question:hover { color: var(--orange); }
+    .faq-q:hover { color: var(--orange); }
 
     .faq-icon {
-      font-size: 1.3rem;
+      width: 28px; height: 28px;
+      border: 1.5px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
       color: var(--orange);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       flex-shrink: 0;
     }
 
-    .faq-item.active .faq-icon { transform: rotate(45deg); }
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+      background: var(--orange);
+      border-color: var(--orange);
+      color: white;
+    }
 
-    .faq-answer {
+    .faq-a {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .faq-item.active .faq-answer { max-height: 200px; }
+    .faq-item.active .faq-a { max-height: 200px; }
 
-    .faq-answer p {
+    .faq-a p {
       font-size: 0.9rem;
       color: var(--text-body);
-      line-height: 1.8;
+      line-height: 1.85;
       padding-bottom: 1.5rem;
     }
 
     /* ===== FOOTER ===== */
     .footer {
-      background: var(--text-dark);
+      background: var(--dark);
       color: var(--white);
       padding: 5rem 2rem 2rem;
     }
@@ -1076,47 +1173,45 @@
       gap: 3rem;
     }
 
-    .footer-brand .logo { display: inline-flex; margin-bottom: 1rem; }
+    .footer-brand .logo { display: inline-flex; margin-bottom: 1.2rem; }
     .footer-brand .logo img { filter: brightness(0) invert(1); }
 
     .footer-brand p {
       font-size: 0.85rem;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.7;
-      max-width: 280px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.8;
+      max-width: 260px;
     }
 
     .footer-social {
       display: flex;
-      gap: 0.8rem;
+      gap: 0.6rem;
       margin-top: 1.5rem;
     }
 
     .footer-social a {
-      width: 36px; height: 36px;
-      border: 1px solid rgba(255,255,255,0.15);
+      width: 34px; height: 34px;
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.4);
       text-decoration: none;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 600;
       transition: all 0.3s;
     }
 
-    .footer-social a:hover {
-      border-color: var(--orange);
-      color: var(--orange);
-    }
+    .footer-social a:hover { border-color: var(--orange); color: var(--orange); }
 
     .footer-col h4 {
-      font-size: 0.72rem;
+      font-size: 0.65rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 1.2rem;
+      letter-spacing: 2.5px;
+      margin-bottom: 1.3rem;
+      color: rgba(255,255,255,0.3);
     }
 
     .footer-col a {
@@ -1125,16 +1220,16 @@
       text-decoration: none;
       font-size: 0.85rem;
       margin-bottom: 0.7rem;
-      transition: color 0.3s;
+      transition: all 0.3s;
     }
 
-    .footer-col a:hover { color: var(--orange); }
+    .footer-col a:hover { color: var(--white); transform: translateX(3px); }
 
     .footer-bottom {
       max-width: 1200px;
-      margin: 3rem auto 0;
+      margin: 4rem auto 0;
       padding-top: 2rem;
-      border-top: 1px solid rgba(255,255,255,0.08);
+      border-top: 1px solid rgba(255,255,255,0.06);
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
@@ -1142,78 +1237,71 @@
     }
 
     .footer-bottom p {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.3);
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.25);
     }
 
     /* ===== WHATSAPP ===== */
-    .whatsapp-float {
+    .whatsapp-btn {
       position: fixed;
       bottom: 2rem; right: 2rem;
-      width: 56px; height: 56px;
+      width: 54px; height: 54px;
       background: #25d366;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+      box-shadow: 0 4px 20px rgba(37,211,102,0.3);
       z-index: 999;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       text-decoration: none;
     }
 
-    .whatsapp-float:hover {
-      transform: scale(1.1) translateY(-2px);
-      box-shadow: 0 8px 30px rgba(37,211,102,0.45);
+    .whatsapp-btn:hover {
+      transform: scale(1.1) translateY(-3px);
+      box-shadow: 0 8px 30px rgba(37,211,102,0.4);
     }
 
-    .whatsapp-float svg { width: 28px; height: 28px; fill: white; }
+    .whatsapp-btn svg { width: 26px; height: 26px; fill: white; }
 
     /* ===== ANIMATIONS ===== */
-    @keyframes fadeInUp {
+    @keyframes slideUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-15px); }
+    @keyframes wordUp {
+      to { transform: translateY(0); }
+    }
+
+    @keyframes mosaicIn {
+      from { opacity: 0; transform: scale(0.9) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes floatBadge {
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes wordReveal {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.5; }
     }
 
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.92); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes floatIn {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
-    }
-
-    @keyframes scrollDown {
-      0% { top: -100%; }
-      100% { top: 200%; }
-    }
-
-    @keyframes marquee {
+    @keyframes marqueeScroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
 
+    @keyframes loaderFill {
+      to { width: 100%; }
+    }
+
     .reveal {
       opacity: 0;
-      transform: translateY(50px);
-      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(60px);
+      transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .reveal.visible {
@@ -1221,14 +1309,23 @@
       transform: translateY(0);
     }
 
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-visual { order: -1; }
+      .hero-mosaic { height: 400px; }
+      .hero-float { display: none; }
+      .benefits-header { grid-template-columns: 1fr; gap: 1rem; }
       .benefits-grid { grid-template-columns: repeat(2, 1fr); }
-      .collections-grid { grid-template-columns: repeat(3, 1fr); }
-      .steps-container { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
-      .steps-container::before { display: none; }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+      .step-item::after { display: none; }
       .tech-grid { grid-template-columns: repeat(2, 1fr); }
-      .numbers-grid { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
+      .showcase-bento { grid-template-columns: 1fr; gap: 2.5rem; }
+      .numbers-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
     }
 
     @media (max-width: 768px) {
@@ -1240,67 +1337,62 @@
         top: 100%; left: 0; right: 0;
         background: rgba(255,255,255,0.98);
         backdrop-filter: blur(20px);
-        padding: 1.5rem 2rem;
+        padding: 2rem;
         border-bottom: 1px solid var(--border);
         gap: 1.2rem;
       }
       .menu-toggle { display: block; }
 
-      .hero {
-        grid-template-columns: 1fr;
-        min-height: auto;
-        padding: 7rem 1.5rem 3rem;
-        gap: 2.5rem;
-      }
-      .hero-images { order: -1; }
-      .hero-float-badge { display: none; }
-      .scroll-indicator { display: none; }
-      .hero-stats { gap: 1.5rem; }
+      .hero { min-height: auto; padding: 6rem 1.5rem 3rem; }
+      .hero h1 { font-size: 2.6rem; letter-spacing: -1.5px; }
+      .hero-mosaic { height: 300px; gap: 0.5rem; }
+      .hero-metrics { gap: 2rem; flex-wrap: wrap; }
 
       section { padding: 5rem 1.5rem; }
 
-      .benefits-grid { grid-template-columns: 1fr; }
-      .collections-grid { grid-template-columns: repeat(2, 1fr); }
-      .collections-grid .collection-item:nth-child(5) { display: none; }
-      .collection-overlay { opacity: 1; }
-      .steps-container { grid-template-columns: 1fr 1fr; }
-      .tech-grid { grid-template-columns: 1fr 1fr; }
-      .showcase-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-      .showcase-img:nth-child(2) { margin-top: 0; }
-      .showcase-img:nth-child(3) { margin-top: 0; }
+      .benefits-grid { grid-template-columns: 1fr; gap: 1px; }
+      .gallery-card { width: 280px; }
+      .gallery-card img { height: 380px; }
+      .gallery-card-info { transform: translateY(0); }
+      .steps-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .tech-grid { grid-template-columns: 1fr; }
       .testimonials-grid { grid-template-columns: 1fr; }
-      .numbers-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
       .footer-bottom { flex-direction: column; text-align: center; }
     }
 
     @media (max-width: 480px) {
+      .hero h1 { font-size: 2.1rem; }
       .hero-actions { flex-direction: column; }
-      .btn-primary, .btn-outline, .btn-white, .btn-ghost { width: 100%; justify-content: center; }
-      .hero h1 { font-size: 2.2rem; }
-      .collections-grid { gap: 0.6rem; }
-      .tech-grid { grid-template-columns: 1fr; }
-      .steps-container { grid-template-columns: 1fr; }
+      .btn { width: 100%; justify-content: center; }
+      .btn-white, .btn-ghost-white { width: 100%; justify-content: center; }
+      .hero-mosaic { height: 240px; }
+      .mosaic-img:first-child { grid-row: auto; }
+      .numbers-grid { grid-template-columns: 1fr 1fr; }
+      .num-value { font-size: 2.2rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- CURSOR GLOW -->
+  <!-- LOADER -->
+  <div class="loader" id="loader"><div class="loader-bar"></div></div>
+
+  <!-- CURSOR GLOW (desktop) -->
   <div class="cursor-glow" id="cursorGlow"></div>
 
   <!-- NAVBAR -->
-  <nav class="navbar">
+  <nav class="navbar" id="navbar">
     <div class="navbar-inner">
-      <a href="#" class="logo"><img src="Imagens/logo.png" alt="UVWA Clothing"></a>
-      <ul class="nav-links">
+      <a href="#" class="logo"><img src="Imagens/logo.png" alt="UVWA"></a>
+      <ul class="nav-links" id="navLinks">
         <li><a href="#beneficios">Vantagens</a></li>
         <li><a href="#colecao">Coleção</a></li>
-        <li><a href="#como-funciona">Como Funciona</a></li>
+        <li><a href="#como-funciona">Passos</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="https://www.uvwaclothing.com.br" target="_blank" class="nav-cta">Visitar Loja</a></li>
+        <li><a href="https://www.uvwaclothing.com.br" target="_blank" class="nav-cta">Loja Oficial</a></li>
       </ul>
-      <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+      <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -1308,206 +1400,194 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-text">
-      <div class="hero-badge">Programa de Revenda Oficial</div>
-      <h1>
-        <span class="line">
-          <span class="word" style="animation-delay:0.3s">Revenda</span>
-          <span class="word" style="animation-delay:0.4s">UVWA</span>
-          <span class="word" style="animation-delay:0.5s">e</span>
-        </span>
-        <span class="line">
-          <span class="word" style="animation-delay:0.6s">lucre</span>
-          <span class="word" style="animation-delay:0.7s">com</span>
-          <span class="word italic" style="animation-delay:0.8s">movimento</span>
-        </span>
-      </h1>
-      <p class="hero-sub">Roupas fitness com tecnologia UV50+, anti-odor e secagem rápida. Margens atrativas, estoque pronta-entrega e suporte completo.</p>
-      <div class="hero-actions">
-        <a href="https://wa.me/5543996540162?text=Olá!%20Tenho%20interesse%20no%20programa%20de%20revenda%20UVWA." class="btn-primary" target="_blank">
-          Quero Revender
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="https://www.uvwaclothing.com.br" class="btn-outline" target="_blank">Conhecer a Loja</a>
-      </div>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <h3>UV50+</h3>
-          <p>Proteção Solar</p>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-eyebrow">
+          <div class="line"></div>
+          <span>Programa de Revenda</span>
         </div>
-        <div class="hero-stat">
-          <h3>200+</h3>
-          <p>Produtos</p>
+        <h1>
+          <span class="word"><span class="word-inner" style="animation-delay:.4s">Revenda</span></span>
+          <span class="word"><span class="word-inner" style="animation-delay:.5s">UVWA</span></span><br>
+          <span class="word"><span class="word-inner thin" style="animation-delay:.6s">e lucre com</span></span><br>
+          <span class="word"><span class="word-inner italic" style="animation-delay:.75s">movimento</span></span>
+        </h1>
+        <p class="hero-sub">Roupas fitness com proteção UV50+, anti-odor e secagem rápida. Margens de até 100% e suporte completo para você crescer.</p>
+        <div class="hero-actions">
+          <a href="https://wa.me/5543996540162?text=Olá!%20Tenho%20interesse%20no%20programa%20de%20revenda%20UVWA." class="btn btn-primary" target="_blank">
+            Quero Revender
+            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="https://www.uvwaclothing.com.br" class="btn btn-outline" target="_blank">Conhecer a Loja</a>
         </div>
-        <div class="hero-stat">
-          <h3>100%</h3>
-          <p>Margem Lucro</p>
-        </div>
-      </div>
-    </div>
-    <div class="hero-images">
-      <div class="hero-img">
-        <img src="Imagens/conjunto-navy-1.jpeg" alt="Conjunto fitness UVWA Navy" loading="eager">
-      </div>
-      <div class="hero-img">
-        <img src="Imagens/rash-feminina-bege-1.jpeg" alt="Rash feminina UVWA Bege UV50+" loading="eager">
-      </div>
-      <div class="hero-float-badge">
-        <div class="float-icon">☀️</div>
-        <div class="float-text">
-          <h4>Proteção UV50+</h4>
-          <p>Bloqueia 98% dos raios</p>
+        <div class="hero-metrics">
+          <div class="metric">
+            <div class="metric-value">UV50+</div>
+            <div class="metric-label">Proteção Solar</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">200+</div>
+            <div class="metric-label">Produtos</div>
+          </div>
+          <div class="metric">
+            <div class="metric-value">100%</div>
+            <div class="metric-label">Margem Lucro</div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="scroll-indicator">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
+      <div class="hero-visual">
+        <div class="hero-mosaic">
+          <div class="mosaic-img"><img src="Imagens/conjunto-navy-1.jpeg" alt="Conjunto Navy UVWA" loading="eager"></div>
+          <div class="mosaic-img"><img src="Imagens/rash-feminina-bege-1.jpeg" alt="Rash UV50+ Bege" loading="eager"></div>
+          <div class="mosaic-img"><img src="Imagens/conjunto-verde-2.jpeg" alt="Conjunto Verde Sage" loading="eager"></div>
+        </div>
+        <div class="hero-float">
+          <div class="fl-dot"></div>
+          <p>UV50+ <span>— Proteção comprovada</span></p>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- MARQUEE -->
-  <div class="marquee-section">
+  <div class="marquee">
     <div class="marquee-track">
-      <div class="marquee-item"><span class="dot"></span>Proteção UV50+</div>
-      <div class="marquee-item"><span class="dot"></span>Anti-Odor</div>
-      <div class="marquee-item"><span class="dot"></span>Secagem Rápida</div>
-      <div class="marquee-item"><span class="dot"></span>Resistente ao Cloro</div>
-      <div class="marquee-item"><span class="dot"></span>Tecido Premium</div>
-      <div class="marquee-item"><span class="dot"></span>Conforto Total</div>
-      <div class="marquee-item"><span class="dot"></span>Proteção UV50+</div>
-      <div class="marquee-item"><span class="dot"></span>Anti-Odor</div>
-      <div class="marquee-item"><span class="dot"></span>Secagem Rápida</div>
-      <div class="marquee-item"><span class="dot"></span>Resistente ao Cloro</div>
-      <div class="marquee-item"><span class="dot"></span>Tecido Premium</div>
-      <div class="marquee-item"><span class="dot"></span>Conforto Total</div>
+      <div class="marquee-item"><span class="sep"></span><span>Proteção UV50+</span></div>
+      <div class="marquee-item"><span class="sep"></span><span>Anti-Odor</span></div>
+      <div class="marquee-item"><span class="sep"></span><span>Secagem Rápida</span></div>
+      <div class="marquee-item"><span class="sep"></span><span>Resistente ao Cloro</span></div>
+      <div class="marquee-item"><span class="sep"></span><span>Tecido Premium</span></div>
+      <div class="marquee-item"><span class="sep"></span><span>Conforto Total</span></div>
+      <div class="marquee-item"><span class="sep"></span><span>Proteção UV50+</span></div>
+      <div class="marquee-item"><span class="sep"></span><span>Anti-Odor</span></div>
+      <div class="marquee-item"><span class="sep"></span><span>Secagem Rápida</span></div>
+      <div class="marquee-item"><span class="sep"></span><span>Resistente ao Cloro</span></div>
+      <div class="marquee-item"><span class="sep"></span><span>Tecido Premium</span></div>
+      <div class="marquee-item"><span class="sep"></span><span>Conforto Total</span></div>
     </div>
   </div>
 
   <!-- BENEFITS -->
   <section class="benefits" id="beneficios">
-    <div class="section-inner reveal">
-      <span class="section-label">Por que revender UVWA</span>
-      <h2 class="section-title">Vantagens exclusivas<br>para revendedores</h2>
-      <p class="section-desc">Construa um negócio lucrativo com produtos de alta tecnologia que se vendem sozinhos.</p>
-      <div class="benefits-grid">
+    <div class="section-inner">
+      <div class="benefits-header reveal">
+        <div>
+          <span class="section-label">Por que revender</span>
+          <h2 class="section-title">Vantagens que fazem<br>a <span class="accent">diferença</span></h2>
+        </div>
+        <p class="section-desc">Construa um negócio lucrativo com produtos de alta tecnologia que se vendem sozinhos.</p>
+      </div>
+      <div class="benefits-grid reveal reveal-delay-2">
         <div class="benefit-card">
-          <div class="benefit-number">01</div>
+          <div class="benefit-num">01</div>
           <h3>Margens Atrativas</h3>
-          <p>Lucre até 100% em cada peça vendida. Preços de atacado exclusivos para revendedores cadastrados.</p>
+          <p>Lucre até 100% em cada peça. Preços de atacado exclusivos para revendedores cadastrados.</p>
         </div>
         <div class="benefit-card">
-          <div class="benefit-number">02</div>
-          <h3>Estoque Pronta-Entrega</h3>
-          <p>Sem necessidade de estoque mínimo. Peça conforme a demanda e receba com agilidade.</p>
+          <div class="benefit-num">02</div>
+          <h3>Pronta-Entrega</h3>
+          <p>Sem estoque mínimo. Peça conforme a demanda e receba com agilidade total.</p>
         </div>
         <div class="benefit-card">
-          <div class="benefit-number">03</div>
-          <h3>Produto que Vende Sozinho</h3>
-          <p>Tecnologia UV50+, anti-odor e secagem rápida. O diferencial técnico fecha a venda por você.</p>
+          <div class="benefit-num">03</div>
+          <h3>Vende Sozinho</h3>
+          <p>UV50+, anti-odor, secagem rápida. O diferencial técnico fecha a venda por você.</p>
         </div>
         <div class="benefit-card">
-          <div class="benefit-number">04</div>
+          <div class="benefit-num">04</div>
           <h3>Material de Apoio</h3>
           <p>Fotos profissionais, catálogo digital e conteúdo pronto para suas redes sociais.</p>
         </div>
         <div class="benefit-card">
-          <div class="benefit-number">05</div>
-          <h3>Sem Investimento Alto</h3>
-          <p>Comece com poucos itens e escale conforme as vendas crescerem. Risco zero.</p>
+          <div class="benefit-num">05</div>
+          <h3>Risco Zero</h3>
+          <p>Comece com poucos itens e escale conforme as vendas crescerem. Investimento mínimo.</p>
         </div>
         <div class="benefit-card">
-          <div class="benefit-number">06</div>
+          <div class="benefit-num">06</div>
           <h3>Suporte Direto</h3>
-          <p>Canal exclusivo no WhatsApp com a equipe UVWA para dúvidas e novidades em primeira mão.</p>
+          <p>Canal exclusivo no WhatsApp com a equipe UVWA. Dúvidas e novidades em primeira mão.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- COLLECTIONS -->
-  <section class="collections" id="colecao">
-    <div class="section-inner reveal">
-      <div style="text-align:center; margin-bottom: 0.5rem;">
-        <span class="section-label" style="justify-content:center;">Coleção</span>
-        <h2 class="section-title">Peças que suas clientes<br>vão amar</h2>
-        <p class="section-desc" style="margin: 0.5rem auto 0;">Cada cor, um estilo. Cada peça, tecnologia de ponta.</p>
+  <!-- GALLERY (HORIZONTAL SCROLL) -->
+  <section class="gallery" id="colecao">
+    <div class="gallery-header reveal">
+      <div>
+        <span class="section-label">Coleção</span>
+        <h2 class="section-title">Peças que suas<br>clientes vão <span class="accent">amar</span></h2>
       </div>
-      <div class="collections-grid">
-        <div class="collection-item">
-          <img src="Imagens/conjunto-navy-2.jpeg" alt="Conjunto Navy UVWA" loading="lazy">
-          <span class="collection-tag">Novo</span>
-          <div class="collection-overlay">
-            <h3>Conjunto Navy</h3>
-            <p>Cropped + Legging</p>
-          </div>
+      <a href="https://www.uvwaclothing.com.br" class="btn btn-outline" target="_blank" style="height:fit-content;">
+        Catálogo Completo
+        <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+      </a>
+    </div>
+    <div class="gallery-track-wrapper" id="galleryWrapper">
+      <div class="gallery-track">
+        <div class="gallery-card">
+          <img src="Imagens/conjunto-navy-2.jpeg" alt="Conjunto Navy" loading="lazy">
+          <span class="gallery-tag">Novo</span>
+          <div class="gallery-card-info"><h3>Conjunto Navy</h3><p>Cropped + Legging Canelada</p></div>
         </div>
-        <div class="collection-item">
-          <img src="Imagens/conjunto-verde-1.jpeg" alt="Conjunto Verde Sage UVWA" loading="lazy">
-          <div class="collection-overlay">
-            <h3>Conjunto Verde Sage</h3>
-            <p>Cropped + Legging</p>
-          </div>
+        <div class="gallery-card">
+          <img src="Imagens/conjunto-verde-1.jpeg" alt="Conjunto Verde Sage" loading="lazy">
+          <div class="gallery-card-info"><h3>Conjunto Verde Sage</h3><p>Cropped + Legging Canelada</p></div>
         </div>
-        <div class="collection-item">
-          <img src="Imagens/conjunto-pink-1.jpeg" alt="Conjunto Pink UVWA" loading="lazy">
-          <span class="collection-tag">Best-seller</span>
-          <div class="collection-overlay">
-            <h3>Conjunto Pink</h3>
-            <p>Top + Shorts</p>
-          </div>
+        <div class="gallery-card">
+          <img src="Imagens/conjunto-pink-1.jpeg" alt="Conjunto Pink" loading="lazy">
+          <span class="gallery-tag">Best-seller</span>
+          <div class="gallery-card-info"><h3>Conjunto Pink</h3><p>Top + Shorts Fitness</p></div>
         </div>
-        <div class="collection-item">
-          <img src="Imagens/conjunto-marrom-1.jpeg" alt="Conjunto Marrom UVWA" loading="lazy">
-          <div class="collection-overlay">
-            <h3>Conjunto Marrom</h3>
-            <p>Top + Legging</p>
-          </div>
+        <div class="gallery-card">
+          <img src="Imagens/conjunto-marrom-1.jpeg" alt="Conjunto Marrom" loading="lazy">
+          <div class="gallery-card-info"><h3>Conjunto Marrom</h3><p>Top + Legging Canelada</p></div>
         </div>
-        <div class="collection-item">
-          <img src="Imagens/rash-feminina-bege-3.jpeg" alt="Rash UV50+ Bege UVWA" loading="lazy">
-          <span class="collection-tag">UV50+</span>
-          <div class="collection-overlay">
-            <h3>Rash UV50+</h3>
-            <p>Manga Longa</p>
-          </div>
+        <div class="gallery-card">
+          <img src="Imagens/rash-feminina-bege-3.jpeg" alt="Rash UV50+ Bege" loading="lazy">
+          <span class="gallery-tag">UV50+</span>
+          <div class="gallery-card-info"><h3>Rash UV50+ Bege</h3><p>Manga Longa Proteção Solar</p></div>
         </div>
-      </div>
-      <div style="text-align:center; margin-top: 3rem;">
-        <a href="https://www.uvwaclothing.com.br" class="btn-outline" target="_blank">
-          Ver Catálogo Completo
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
-        </a>
+        <div class="gallery-card">
+          <img src="Imagens/conjunto-preto-1.jpeg" alt="Conjunto Preto" loading="lazy">
+          <div class="gallery-card-info"><h3>Conjunto Preto</h3><p>Top + Legging Canelada</p></div>
+        </div>
+        <div class="gallery-card">
+          <img src="Imagens/conjunto-marrom-5.jpeg" alt="Conjunto Marrom" loading="lazy">
+          <div class="gallery-card-info"><h3>Conjunto Marrom</h3><p>Vista lateral</p></div>
+        </div>
       </div>
     </div>
+    <div class="gallery-hint reveal">Arraste para explorar →</div>
   </section>
 
-  <!-- HOW IT WORKS -->
-  <section class="how-it-works" id="como-funciona">
-    <div class="section-inner reveal">
-      <div style="text-align:center;">
+  <!-- STEPS -->
+  <section class="steps-section" id="como-funciona">
+    <div class="section-inner">
+      <div style="text-align:center;" class="reveal">
         <span class="section-label" style="justify-content:center;">Passo a passo</span>
-        <h2 class="section-title">Como funciona a revenda</h2>
-        <p class="section-desc" style="margin: 0.5rem auto 0;">Em 4 passos simples você já começa a lucrar.</p>
+        <h2 class="section-title">Simples de <span class="accent">começar</span></h2>
+        <p class="section-desc" style="margin:0.5rem auto 0;">Em 4 passos você já está faturando.</p>
       </div>
-      <div class="steps-container">
-        <div class="step">
-          <div class="step-circle"><span>01</span></div>
+      <div class="steps-grid reveal reveal-delay-2">
+        <div class="step-item">
+          <div class="step-num">Passo 01</div>
           <h3>Cadastre-se</h3>
-          <p>Entre em contato pelo WhatsApp e solicite seu cadastro como revendedor oficial UVWA.</p>
+          <p>Entre em contato pelo WhatsApp e solicite seu cadastro como revendedor oficial.</p>
         </div>
-        <div class="step">
-          <div class="step-circle"><span>02</span></div>
+        <div class="step-item">
+          <div class="step-num">Passo 02</div>
           <h3>Receba o Catálogo</h3>
-          <p>Acesse preços de atacado, fotos profissionais e materiais de divulgação exclusivos.</p>
+          <p>Acesse preços de atacado, fotos profissionais e materiais de divulgação.</p>
         </div>
-        <div class="step">
-          <div class="step-circle"><span>03</span></div>
+        <div class="step-item">
+          <div class="step-num">Passo 03</div>
           <h3>Divulgue e Venda</h3>
           <p>Use suas redes sociais, WhatsApp e contatos para apresentar os produtos.</p>
         </div>
-        <div class="step">
-          <div class="step-circle"><span>04</span></div>
+        <div class="step-item">
+          <div class="step-num">Passo 04</div>
           <h3>Lucre</h3>
           <p>Faça seus pedidos, receba rápido e fature com margens de até 100% por peça.</p>
         </div>
@@ -1517,30 +1597,29 @@
 
   <!-- TECH -->
   <section class="tech">
-    <div class="section-inner reveal">
-      <div style="text-align:center;">
+    <div class="section-inner">
+      <div style="text-align:center;" class="reveal">
         <span class="section-label" style="justify-content:center;">Tecnologia</span>
-        <h2 class="section-title">O diferencial que vende</h2>
-        <p class="section-desc" style="margin:0 auto;">Cada peça UVWA carrega tecnologia de ponta. Suas clientes sentem a diferença.</p>
+        <h2 class="section-title">O diferencial que <span class="accent">vende</span></h2>
       </div>
-      <div class="tech-grid">
-        <div class="tech-item">
-          <div class="tech-icon">☀️</div>
+      <div class="tech-grid reveal reveal-delay-2">
+        <div class="tech-card">
+          <span class="tech-emoji">☀️</span>
           <h3>UV50+</h3>
           <p>Bloqueia 98% dos raios UV. Proteção real aprovada por testes.</p>
         </div>
-        <div class="tech-item">
-          <div class="tech-icon">💨</div>
+        <div class="tech-card">
+          <span class="tech-emoji">💨</span>
           <h3>Anti-Odor</h3>
           <p>Impede a proliferação de bactérias causadoras de mau cheiro.</p>
         </div>
-        <div class="tech-item">
-          <div class="tech-icon">💧</div>
+        <div class="tech-card">
+          <span class="tech-emoji">💧</span>
           <h3>Secagem Rápida</h3>
-          <p>Tecido que seca até 3x mais rápido que o convencional.</p>
+          <p>Seca até 3x mais rápido que o tecido convencional.</p>
         </div>
-        <div class="tech-item">
-          <div class="tech-icon">🏊</div>
+        <div class="tech-card">
+          <span class="tech-emoji">🏊</span>
           <h3>Resistente ao Cloro</h3>
           <p>Durabilidade mesmo com uso frequente em piscina.</p>
         </div>
@@ -1550,28 +1629,27 @@
 
   <!-- SHOWCASE -->
   <section class="showcase">
-    <div class="section-inner reveal">
-      <div class="showcase-grid">
-        <div class="showcase-images">
-          <div class="showcase-img"><img src="Imagens/conjunto-verde-2.jpeg" alt="UVWA Verde detalhe" loading="lazy"></div>
-          <div class="showcase-img"><img src="Imagens/conjunto-preto-1.jpeg" alt="UVWA Preto" loading="lazy"></div>
-          <div class="showcase-img"><img src="Imagens/conjunto-marrom-3.jpeg" alt="UVWA Marrom detalhe" loading="lazy"></div>
-          <div class="showcase-img"><img src="Imagens/conjunto-navy-3.jpeg" alt="UVWA Navy detalhe" loading="lazy"></div>
+    <div class="section-inner">
+      <div class="showcase-bento reveal">
+        <div class="bento-images">
+          <div class="bento-img"><img src="Imagens/conjunto-verde-4.jpeg" alt="UVWA Verde" loading="lazy"></div>
+          <div class="bento-img"><img src="Imagens/conjunto-navy-detalhe-1.jpeg" alt="UVWA Navy detalhe" loading="lazy"></div>
+          <div class="bento-img"><img src="Imagens/conjunto-pink-2.jpeg" alt="UVWA Pink detalhe" loading="lazy"></div>
         </div>
         <div class="showcase-text">
           <span class="section-label">Para revendedores</span>
-          <h3>Produtos que falam por si</h3>
+          <h3>Produtos que falam<br>por si</h3>
           <p>Tecido canelado premium, costura reforçada e caimento perfeito. Quando sua cliente experimenta, a venda está feita.</p>
-          <ul class="showcase-features">
+          <ul class="feature-list">
             <li>Fotos profissionais prontas para divulgação</li>
             <li>5 cores de coleção para oferecer variedade</li>
             <li>Tamanhos do P ao G2</li>
             <li>Embalagem premium que valoriza a entrega</li>
             <li>Reposição rápida de estoque</li>
           </ul>
-          <a href="https://wa.me/5543996540162?text=Quero%20saber%20mais%20sobre%20a%20revenda%20UVWA" class="btn-primary" target="_blank">
+          <a href="https://wa.me/5543996540162?text=Quero%20saber%20mais%20sobre%20a%20revenda%20UVWA" class="btn btn-primary" target="_blank">
             Falar com a Equipe
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
       </div>
@@ -1581,64 +1659,43 @@
   <!-- NUMBERS -->
   <section class="numbers">
     <div class="numbers-grid reveal">
-      <div class="number-item">
-        <h3 data-count="200">0</h3>
-        <p>Produtos no catálogo</p>
-      </div>
-      <div class="number-item">
-        <h3 data-count="100">0</h3>
-        <p>% margem de lucro</p>
-      </div>
-      <div class="number-item">
-        <h3 data-count="5">0</h3>
-        <p>Coleções disponíveis</p>
-      </div>
-      <div class="number-item">
-        <h3 data-count="12">0</h3>
-        <p>x parcelamento</p>
-      </div>
+      <div class="number-item"><div class="num-value" data-count="200">0</div><div class="num-label">Produtos no catálogo</div></div>
+      <div class="number-item"><div class="num-value" data-count="100">0</div><div class="num-label">% margem de lucro</div></div>
+      <div class="number-item"><div class="num-value" data-count="5">0</div><div class="num-label">Coleções disponíveis</div></div>
+      <div class="number-item"><div class="num-value" data-count="12">0</div><div class="num-label">x parcelamento</div></div>
     </div>
   </section>
 
   <!-- TESTIMONIALS -->
   <section class="testimonials">
-    <div class="section-inner reveal">
-      <div style="text-align:center;">
+    <div class="section-inner">
+      <div style="text-align:center;" class="reveal">
         <span class="section-label" style="justify-content:center;">Depoimentos</span>
-        <h2 class="section-title">Quem revende, aprova</h2>
+        <h2 class="section-title">Quem revende, <span class="accent">aprova</span></h2>
       </div>
-      <div class="testimonials-grid">
-        <div class="testimonial-card">
-          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <div class="testimonials-grid reveal reveal-delay-2">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
           <blockquote>"Comecei revendendo para amigas da academia e em 2 meses já estava faturando mais que meu salário. O produto se vende sozinho."</blockquote>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">AF</div>
-            <div>
-              <div class="testimonial-name">Amanda F.</div>
-              <div class="testimonial-role">Revendedora desde 2025</div>
-            </div>
+          <div class="testi-author">
+            <div class="testi-avatar">AF</div>
+            <div><div class="testi-name">Amanda F.</div><div class="testi-role">Revendedora desde 2025</div></div>
           </div>
         </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
           <blockquote>"A qualidade do tecido impressiona qualquer cliente. A proteção UV é o diferencial que nenhuma outra marca oferece nessa faixa de preço."</blockquote>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">RS</div>
-            <div>
-              <div class="testimonial-name">Rodrigo S.</div>
-              <div class="testimonial-role">Lojista em Maringá-PR</div>
-            </div>
+          <div class="testi-author">
+            <div class="testi-avatar">RS</div>
+            <div><div class="testi-name">Rodrigo S.</div><div class="testi-role">Lojista em Maringá-PR</div></div>
           </div>
         </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
           <blockquote>"Entrega rápida, suporte incrível e margem que compensa. Melhor decisão que tomei pra renda extra."</blockquote>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">CM</div>
-            <div>
-              <div class="testimonial-name">Carla M.</div>
-              <div class="testimonial-role">Revendedora autônoma</div>
-            </div>
+          <div class="testi-author">
+            <div class="testi-avatar">CM</div>
+            <div><div class="testi-name">Carla M.</div><div class="testi-role">Revendedora autônoma</div></div>
           </div>
         </div>
       </div>
@@ -1654,45 +1711,27 @@
       <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
         <a href="https://wa.me/5543996540162?text=Olá!%20Quero%20me%20cadastrar%20no%20programa%20de%20revenda%20UVWA." class="btn-white" target="_blank">
           Cadastrar pelo WhatsApp
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="https://www.uvwaclothing.com.br" class="btn-ghost" target="_blank">Visitar a Loja</a>
+        <a href="https://www.uvwaclothing.com.br" class="btn-ghost-white" target="_blank">Visitar a Loja</a>
       </div>
     </div>
   </section>
 
   <!-- FAQ -->
   <section class="faq" id="faq">
-    <div class="section-inner reveal">
-      <div style="text-align:center;">
+    <div class="section-inner">
+      <div style="text-align:center;" class="reveal">
         <span class="section-label" style="justify-content:center;">Perguntas frequentes</span>
-        <h2 class="section-title">Tire suas dúvidas</h2>
+        <h2 class="section-title">Tire suas <span class="accent">dúvidas</span></h2>
       </div>
-      <div class="faq-list">
-        <div class="faq-item">
-          <button class="faq-question" onclick="toggleFaq(this)">Preciso ter CNPJ para revender?<span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>Não! Você pode revender como pessoa física. Basta se cadastrar pelo WhatsApp e já começa a receber os preços exclusivos.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" onclick="toggleFaq(this)">Qual o pedido mínimo?<span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>O pedido mínimo é acessível e pensado para quem está começando. Entre em contato pelo WhatsApp para saber os valores atualizados.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" onclick="toggleFaq(this)">Como recebo os produtos?<span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>Enviamos pelos Correios ou transportadoras para todo o Brasil. Prazo médio de 3 a 7 dias úteis dependendo da região.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" onclick="toggleFaq(this)">Vocês fornecem material de divulgação?<span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>Sim! Revendedores recebem fotos profissionais, catálogo digital atualizado e conteúdo pronto para postar nas redes sociais.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" onclick="toggleFaq(this)">Qual a margem de lucro?<span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>A margem pode chegar a 100% dependendo do produto. Você define seu preço de venda com base na tabela sugerida ou acima dela.</p></div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" onclick="toggleFaq(this)">Posso trocar ou devolver produtos?<span class="faq-icon">+</span></button>
-          <div class="faq-answer"><p>Sim. Seguimos a política de trocas e devoluções padrão. Consulte as condições detalhadas no site oficial ou pelo WhatsApp.</p></div>
-        </div>
+      <div class="faq-list reveal reveal-delay-1">
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Preciso ter CNPJ para revender?<span class="faq-icon">+</span></button><div class="faq-a"><p>Não! Você pode revender como pessoa física. Basta se cadastrar pelo WhatsApp e já começa a receber os preços exclusivos.</p></div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Qual o pedido mínimo?<span class="faq-icon">+</span></button><div class="faq-a"><p>O pedido mínimo é acessível e pensado para quem está começando. Entre em contato pelo WhatsApp para saber os valores atualizados.</p></div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Como recebo os produtos?<span class="faq-icon">+</span></button><div class="faq-a"><p>Enviamos pelos Correios ou transportadoras para todo o Brasil. Prazo médio de 3 a 7 dias úteis dependendo da região.</p></div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Vocês fornecem material de divulgação?<span class="faq-icon">+</span></button><div class="faq-a"><p>Sim! Revendedores recebem fotos profissionais, catálogo digital atualizado e conteúdo pronto para postar nas redes sociais.</p></div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Qual a margem de lucro?<span class="faq-icon">+</span></button><div class="faq-a"><p>A margem pode chegar a 100% dependendo do produto. Você define seu preço de venda com base na tabela sugerida ou acima dela.</p></div></div>
+        <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Posso trocar ou devolver?<span class="faq-icon">+</span></button><div class="faq-a"><p>Sim. Seguimos a política de trocas e devoluções padrão. Consulte as condições detalhadas no site oficial ou pelo WhatsApp.</p></div></div>
       </div>
     </div>
   </section>
@@ -1701,12 +1740,12 @@
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="#" class="logo"><img src="Imagens/logo.png" alt="UVWA Clothing"></a>
+        <a href="#" class="logo"><img src="Imagens/logo.png" alt="UVWA"></a>
         <p>Roupas com tecnologia UV50+, anti-odor e secagem rápida. Proteção, estilo e conforto para o seu dia a dia.</p>
         <div class="footer-social">
-          <a href="https://www.instagram.com/uvwaclothing" target="_blank" aria-label="Instagram">IG</a>
-          <a href="https://www.facebook.com/uvwa.clothing" target="_blank" aria-label="Facebook">FB</a>
-          <a href="https://wa.me/5543996540162" target="_blank" aria-label="WhatsApp">WA</a>
+          <a href="https://www.instagram.com/uvwaclothing" target="_blank">IG</a>
+          <a href="https://www.facebook.com/uvwa.clothing" target="_blank">FB</a>
+          <a href="https://wa.me/5543996540162" target="_blank">WA</a>
         </div>
       </div>
       <div class="footer-col">
@@ -1736,77 +1775,77 @@
   </footer>
 
   <!-- WHATSAPP -->
-  <a href="https://wa.me/5543996540162?text=Olá!%20Vi%20a%20página%20de%20revenda%20e%20tenho%20interesse." class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+  <a href="https://wa.me/5543996540162?text=Olá!%20Vi%20a%20página%20de%20revenda%20e%20tenho%20interesse." class="whatsapp-btn" target="_blank" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
 
   <script>
-    // Cursor glow
-    const glow = document.getElementById('cursorGlow');
-    document.addEventListener('mousemove', (e) => {
-      glow.style.left = e.clientX + 'px';
-      glow.style.top = e.clientY + 'px';
+    // Loader
+    window.addEventListener('load', () => {
+      setTimeout(() => document.getElementById('loader').classList.add('done'), 1300);
     });
 
-    // Navbar scroll
-    const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 50);
-    });
-
-    // Mobile menu
-    function toggleMenu() {
-      document.querySelector('.nav-links').classList.toggle('open');
+    // Cursor glow (desktop only)
+    if (window.matchMedia('(hover: hover)').matches) {
+      const glow = document.getElementById('cursorGlow');
+      let mx = 0, my = 0, cx = 0, cy = 0;
+      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+      (function lerp() {
+        cx += (mx - cx) * 0.08;
+        cy += (my - cy) * 0.08;
+        glow.style.left = cx + 'px';
+        glow.style.top = cy + 'px';
+        requestAnimationFrame(lerp);
+      })();
     }
+
+    // Navbar
+    const nb = document.getElementById('navbar');
+    window.addEventListener('scroll', () => nb.classList.toggle('scrolled', scrollY > 60), { passive: true });
 
     // FAQ
     function toggleFaq(btn) {
       const item = btn.parentElement;
-      const wasActive = item.classList.contains('active');
+      const open = item.classList.contains('active');
       document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-      if (!wasActive) item.classList.add('active');
+      if (!open) item.classList.add('active');
     }
 
     // Scroll reveal
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    reveals.forEach(el => observer.observe(el));
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => revealObs.observe(el));
 
-    // Counter animation
+    // Counter
     const counters = document.querySelectorAll('[data-count]');
-    const counterObserver = new IntersectionObserver((entries) => {
+    const cObs = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const el = entry.target;
-          const target = parseInt(el.dataset.count);
-          const duration = 2000;
-          const start = performance.now();
-          const animate = (now) => {
-            const progress = Math.min((now - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            el.textContent = Math.round(target * eased) + (target > 50 ? '+' : 'x');
-            if (progress < 1) requestAnimationFrame(animate);
-          };
-          requestAnimationFrame(animate);
-          counterObserver.unobserve(el);
-        }
+        if (!entry.isIntersecting) return;
+        const el = entry.target, target = +el.dataset.count, dur = 2200, start = performance.now();
+        const suffix = target >= 100 ? '+' : target === 12 ? 'x' : '';
+        (function tick(now) {
+          const p = Math.min((now - start) / dur, 1);
+          const ease = 1 - Math.pow(1 - p, 4);
+          el.textContent = Math.round(target * ease) + suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        })(start);
+        cObs.unobserve(el);
       });
     }, { threshold: 0.5 });
-    counters.forEach(el => counterObserver.observe(el));
+    counters.forEach(el => cObs.observe(el));
 
-    // Close mobile menu on link click
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        document.querySelector('.nav-links').classList.remove('open');
-      });
-    });
+    // Gallery drag scroll
+    const gw = document.getElementById('galleryWrapper');
+    let isDown = false, startX, scrollLeft;
+    gw.addEventListener('mousedown', e => { isDown = true; gw.classList.add('grabbing'); startX = e.pageX - gw.offsetLeft; scrollLeft = gw.scrollLeft; });
+    gw.addEventListener('mouseleave', () => { isDown = false; gw.classList.remove('grabbing'); });
+    gw.addEventListener('mouseup', () => { isDown = false; gw.classList.remove('grabbing'); });
+    gw.addEventListener('mousemove', e => { if (!isDown) return; e.preventDefault(); gw.scrollLeft = scrollLeft - (e.pageX - gw.offsetLeft - startX) * 1.5; });
+
+    // Close mobile menu
+    document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
   </script>
 
 </body>
