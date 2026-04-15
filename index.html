@@ -73,13 +73,14 @@
     }
 
     .logo {
-      font-family: 'Inter', sans-serif;
-      font-size: 1.6rem;
-      font-weight: 900;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--text-dark);
+      display: inline-flex;
+      align-items: center;
       text-decoration: none;
+    }
+
+    .logo img {
+      height: 28px;
+      width: auto;
     }
 
     .nav-links {
@@ -768,9 +769,12 @@
     }
 
     .footer-brand .logo {
-      display: inline-block;
+      display: inline-flex;
       margin-bottom: 1rem;
-      color: var(--white);
+    }
+
+    .footer-brand .logo img {
+      filter: brightness(0) invert(1);
     }
 
     .footer-brand p {
@@ -943,7 +947,7 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="navbar-inner">
-      <a href="#" class="logo">UVWA</a>
+      <a href="#" class="logo"><img src="Imagens/logo.png" alt="UVWA Clothing"></a>
       <ul class="nav-links">
         <li><a href="#beneficios">Vantagens</a></li>
         <li><a href="#colecao">Produtos</a></li>
@@ -1303,7 +1307,7 @@
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="#" class="logo">UVWA</a>
+        <a href="#" class="logo"><img src="Imagens/logo.png" alt="UVWA Clothing"></a>
         <p>Roupas com tecnologia UV50+, anti-odor e secagem rapida. Protecao, estilo e conforto para o seu dia a dia.</p>
         <div class="footer-social">
           <a href="https://www.instagram.com/uvwaclothing" target="_blank" aria-label="Instagram">IG</a>
