@@ -16,20 +16,20 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #050505;
-      --bg-elevated: #0c0c0c;
-      --bg-card: #111111;
-      --bg-card-hover: #161616;
-      --surface: #1a1a1a;
-      --border: rgba(255,255,255,0.06);
-      --border-hover: rgba(255,255,255,0.12);
-      --white: #ffffff;
-      --text: #e8e8e8;
-      --text-secondary: #888888;
-      --text-muted: #555555;
+      --bg: #ffffff;
+      --bg-elevated: #faf9f7;
+      --bg-card: #f5f1ec;
+      --bg-card-hover: #ede8e2;
+      --surface: #e3ded7;
+      --border: rgba(0,0,0,0.07);
+      --border-hover: rgba(0,0,0,0.14);
+      --white: #1a1816;
+      --text: #2a2825;
+      --text-secondary: #5c5852;
+      --text-muted: #9e978e;
       --orange: #F27B20;
-      --orange-soft: rgba(242,123,32,0.15);
-      --orange-glow: rgba(242,123,32,0.08);
+      --orange-soft: rgba(242,123,32,0.12);
+      --orange-glow: rgba(242,123,32,0.07);
       --radius: 16px;
       --radius-sm: 10px;
       --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -53,7 +53,7 @@
       inset: 0;
       z-index: 9999;
       pointer-events: none;
-      opacity: 0.03;
+      opacity: 0.018;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
@@ -84,7 +84,7 @@
       z-index: 9998;
       transform: translate(-50%, -50%);
       transition: width 0.4s var(--ease), height 0.4s var(--ease), border-color 0.3s;
-      mix-blend-mode: difference;
+      mix-blend-mode: normal;
     }
     .cursor.hover { width: 48px; height: 48px; border-color: var(--white); }
     @media (hover: none) { .cursor { display: none; } }
@@ -102,13 +102,13 @@
     }
     nav.scrolled {
       padding: 1rem 2.5rem;
-      background: rgba(5,5,5,0.85);
+      background: rgba(255,255,255,0.85);
       backdrop-filter: blur(30px);
       -webkit-backdrop-filter: blur(30px);
       border-bottom: 1px solid var(--border);
     }
     .nav-logo { display: flex; align-items: center; }
-    .nav-logo img { height: 22px; filter: brightness(0) invert(1); transition: opacity 0.3s; }
+    .nav-logo img { height: 22px; transition: opacity 0.3s; }
     .nav-links { display: flex; gap: 2.5rem; align-items: center; list-style: none; }
     .nav-links a {
       color: var(--text-secondary);
@@ -139,7 +139,7 @@
     .menu-btn span {
       position: absolute; left: 0;
       width: 100%; height: 1px;
-      background: var(--white);
+      background: var(--text);
       transition: all 0.3s;
     }
     .menu-btn span:nth-child(1) { top: 0; }
@@ -167,8 +167,8 @@
       width: 100%; height: 100%;
       object-fit: cover;
       object-position: top center;
-      opacity: 0.35;
-      filter: grayscale(0.2);
+      opacity: 0.18;
+      filter: grayscale(0.3);
     }
     .hero-bg::after {
       content: '';
@@ -177,9 +177,9 @@
       background: linear-gradient(
         to top,
         var(--bg) 0%,
-        rgba(5,5,5,0.7) 40%,
-        rgba(5,5,5,0.3) 70%,
-        rgba(5,5,5,0.6) 100%
+        rgba(255,255,255,0.6) 40%,
+        rgba(255,255,255,0.2) 70%,
+        rgba(255,255,255,0.5) 100%
       );
     }
 
@@ -287,7 +287,7 @@
       border-radius: 50px;
       transition: all 0.4s var(--ease);
     }
-    .btn-ghost:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+    .btn-ghost:hover { border-color: var(--white); background: rgba(0,0,0,0.04); }
 
     .scroll-hint {
       position: absolute;
@@ -569,15 +569,15 @@
       position: absolute;
       top: 16px; left: 16px;
       padding: 0.3rem 0.9rem;
-      background: rgba(5,5,5,0.7);
+      background: rgba(255,255,255,0.85);
       backdrop-filter: blur(10px);
-      color: var(--white);
+      color: var(--text);
       font-size: 0.55rem;
       font-weight: 600;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       border-radius: 50px;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(0,0,0,0.08);
     }
 
     .gallery-hint {
@@ -605,7 +605,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, var(--bg) 0%, transparent 30%, transparent 70%, var(--bg) 100%);
+      background: linear-gradient(to top, var(--bg) 0%, rgba(255,255,255,0.3) 30%, rgba(255,255,255,0.1) 70%, var(--bg) 100%);
     }
     .image-break-text {
       position: absolute;
@@ -613,7 +613,8 @@
       z-index: 2;
       font-size: clamp(1.5rem, 3vw, 2.5rem);
       font-weight: 200;
-      color: var(--white);
+      color: var(--text);
+      text-shadow: 0 2px 20px rgba(255,255,255,0.8);
       letter-spacing: -0.5px;
       line-height: 1.3;
     }
@@ -899,13 +900,13 @@
         flex-direction: column;
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(5,5,5,0.97);
+        background: rgba(255,255,255,0.97);
         backdrop-filter: blur(30px);
         padding: 6rem 2rem 2rem;
         gap: 1.5rem;
         z-index: 999;
       }
-      .nav-links.open a { font-size: 1.2rem; letter-spacing: 2px; color: var(--white); }
+      .nav-links.open a { font-size: 1.2rem; letter-spacing: 2px; color: var(--text); }
       .menu-btn { display: block; z-index: 1001; }
 
       .hero { padding: 0 1.5rem 3rem; }
@@ -1291,7 +1292,7 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-brand">
-        <img src="Imagens/logo.png" alt="UVWA" style="height:20px;filter:brightness(0) invert(1);">
+        <img src="Imagens/logo.png" alt="UVWA" style="height:20px;">
         <p>Roupas fitness com tecnologia UV50+, anti-odor e secagem rápida. Proteção e estilo para quem se move.</p>
       </div>
       <div class="footer-col">
