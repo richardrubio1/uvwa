@@ -892,7 +892,12 @@
     }
 
     @media (max-width: 768px) {
-      nav { padding: 1.2rem 1.5rem; }
+      nav {
+        padding: 1.2rem 1.5rem;
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
       nav.scrolled { padding: 0.8rem 1.5rem; }
       .nav-links { display: none; }
       .nav-links.open {
